@@ -1,69 +1,69 @@
-# JavaScript Event Loop Simulator
+# Simulador Visual del Event Loop de JavaScript
 
-A visual, interactive simulator for understanding the JavaScript Event Loop, built with React, Vite, Tailwind CSS, and Framer Motion. This tool helps developers and students visualize how synchronous and asynchronous code is executed in JavaScript, including the Call Stack, Web APIs, Microtask Queue, and Callback Queue.
+Un simulador visual e interactivo para entender el Event Loop de JavaScript, construido con React, Vite, Tailwind CSS y Framer Motion. Esta herramienta ayuda a desarrolladores y estudiantes a visualizar cómo se ejecuta el código síncrono y asíncrono en JavaScript, incluyendo el Call Stack, Web APIs, Microtask Queue y Callback Queue.
 
-## Features
+## Características
 
-- **Visual Event Loop**: Real-time visualization of the Call Stack, Web APIs, Microtask Queue, and Callback Queue.
-- **Interactive Code Blocks**: Editable code examples for synchronous code, setTimeout, Promises, and Fetch API.
-- **Execution Modes**: Automatic or manual step-by-step execution.
-- **Speed Control**: Adjustable execution speed for better understanding.
-- **Execution Log**: Detailed log of each step in the Event Loop.
-- **Summary Modal**: Comprehensive summary of loaded events, execution order, and outputs.
-- **Educational Tooltips**: Hover over panels for explanations.
-- **Dark/Light Theme**: Toggle between themes for comfort.
-- **Responsive Design**: Works on desktop and mobile.
+- **Event Loop Visual**: Visualización en tiempo real del Call Stack, Web APIs, Microtask Queue y Callback Queue.
+- **Bloques de Código Interactivos**: Ejemplos de código editables para código síncrono, setTimeout, Promises y Fetch API.
+- **Modos de Ejecución**: Ejecución automática o manual paso a paso.
+- **Control de Velocidad**: Velocidad de ejecución ajustable para mejor comprensión.
+- **Log de Ejecución**: Registro detallado de cada paso en el Event Loop.
+- **Modal de Resumen**: Resumen completo de eventos cargados, orden de ejecución y salidas.
+- **Tooltips Educativos**: Pasa el mouse sobre los paneles para ver explicaciones.
+- **Tema Oscuro/Claro**: Alternar entre temas para mayor comodidad.
+- **Diseño Responsivo**: Funciona en escritorio y móvil.
 
-## Tech Stack
+## Stack Tecnológico
 
-- **React** - UI framework
-- **Vite** - Build tool
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Styling
-- **Framer Motion** - Animations
-- **shadcn/ui** - UI components
+- **React** - Framework de UI
+- **Vite** - Herramienta de construcción
+- **TypeScript** - Seguridad de tipos
+- **Tailwind CSS** - Estilos
+- **Framer Motion** - Animaciones
+- **shadcn/ui** - Componentes de UI
 
-## Getting Started
+## Comenzar
 
-1. Clone the repository:
+1. Clona el repositorio:
    ```sh
    git clone <YOUR_GIT_URL>
    cd visual-event-sim
    ```
 
-2. Install dependencies:
+2. Instala las dependencias:
    ```sh
    npm i
    ```
 
-3. Start the development server:
+3. Inicia el servidor de desarrollo:
    ```sh
    npm run dev
    ```
 
-4. Open your browser and navigate to the provided local URL.
+4. Abre tu navegador y navega a la URL local proporcionada.
 
-## How to Use
+## Cómo Usar
 
-1. **Load Events**: Use the code blocks at the top to load different types of events (sync, setTimeout, Promise, Fetch).
-2. **Configure Execution**: Choose between automatic or manual execution, and adjust the speed.
-3. **Run Simulation**: Click "Execute" to start the simulation, or use "Next Step" for manual control.
-4. **View Results**: Watch the Event Loop visualization and check the execution log for details.
-5. **Summary**: After execution, view the summary modal for a complete overview.
+1. **Cargar Eventos**: Usa los bloques de código en la parte superior para cargar diferentes tipos de eventos (síncrono, setTimeout, Promise, Fetch).
+2. **Configurar Ejecución**: Elige entre ejecución automática o manual, y ajusta la velocidad.
+3. **Ejecutar Simulación**: Haz clic en "Ejecutar" para iniciar la simulación, o usa "Siguiente paso" para control manual.
+4. **Ver Resultados**: Observa la visualización del Event Loop y revisa el log de ejecución para detalles.
+5. **Resumen**: Después de la ejecución, ve el modal de resumen para una vista completa.
 
-## Educational Value
+## Valor Educativo
 
-This simulator is perfect for:
-- Understanding JavaScript's single-threaded nature
-- Learning about asynchronous programming
-- Visualizing the Event Loop's priority system
-- Debugging async code behavior
-- Teaching JavaScript concepts
+Este simulador es perfecto para:
+- Entender la naturaleza single-threaded de JavaScript
+- Aprender sobre programación asíncrona
+- Visualizar el sistema de prioridades del Event Loop
+- Debuggear comportamiento de código asíncrono
+- Enseñar conceptos de JavaScript
 
-## Contributing
+## Contribuir
 
-Feel free to submit issues, feature requests, or pull requests to improve the simulator.
+Siéntete libre de enviar issues, solicitudes de características o pull requests para mejorar el simulador.
 
-## License
+## Licencia
 
-This project is open source and available under the MIT License.
+Este proyecto es de código abierto y está disponible bajo la Licencia MIT.
