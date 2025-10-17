@@ -4,7 +4,7 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/JS-Event-Loop-Simulator/' : '/',
+  base: "/JS-Event-Loop-Simulator/",
   server: {
     host: "::",
     port: 8080,
