@@ -111,60 +111,59 @@ const Index = () => {
 
         {/* Bottom Section - Visualization: 60% Event Loop (izq) / 40% Log (der) */}
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 flex-1 min-h-0 px-1 pb-6">
-          {/* Izquierda 60% */}
-          <div className="min-h-0 flex flex-col">
+          {/* Izquierda 60% - Event Loop + Botones */}
+          <div className="min-h-0 flex flex-col justify-between">
             <EventLoopPanel tasks={eventLoop.tasks} />
+            {/* Botones alineados con la base del Log */}
+            <div className="flex justify-between items-end mt-4">
+              {/* Botón Ver resumen (izquierda) */}
+              {eventLoop.hasFinished && (
+                <Button
+                  onClick={() => setOpenSummary(true)}
+                  variant="secondary"
+                  className="h-9 px-4 shadow-md bg-secondary/80 hover:bg-secondary backdrop-blur"
+                  title="Ver resumen"
+                >
+                  📊 Ver resumen
+                </Button>
+              )}
+              
+              {/* Botón Ejecutar (derecha) */}
+              <Button
+                onClick={() => {
+                  if (eventLoop.hasFinished) {
+                    eventLoop.reset();
+                  } else if (eventLoop.isAutomatic) {
+                    eventLoop.start();
+                  } else {
+                    eventLoop.nextStep();
+                  }
+                }}
+                disabled={!eventLoop.hasFinished && !eventLoop.hasTasksInQueue}
+                variant="outline"
+                className="h-9 px-4 shadow-md"
+                title={
+                  eventLoop.hasFinished 
+                    ? "Reiniciar simulación" 
+                    : eventLoop.isAutomatic 
+                      ? "Ejecutar simulación" 
+                      : "Siguiente paso"
+                }
+              >
+                {eventLoop.hasFinished 
+                  ? "🔁 Reiniciar" 
+                  : eventLoop.isAutomatic 
+                    ? "⏵ Ejecutar" 
+                    : "⏭ Siguiente paso"
+                }
+              </Button>
+            </div>
           </div>
-          {/* Derecha 40% */}
+          {/* Derecha 40% - Log de Ejecución */}
           <div className="min-h-0 flex flex-col">
             <h3 className="text-xs font-medium px-1 mb-2">📋 Log de Ejecución</h3>
             <ExecutionLog logs={eventLoop.logs} />
           </div>
-        </div>
-        
-        {/* Botones alineados con el borde inferior del Log */}
-        <div className="flex justify-between items-end px-1 pb-6">
-          {/* Botón Ver resumen (izquierda) */}
-          {eventLoop.hasFinished && (
-            <Button
-              onClick={() => setOpenSummary(true)}
-              variant="secondary"
-              className="h-9 px-4 shadow-md bg-secondary/80 hover:bg-secondary backdrop-blur"
-              title="Ver resumen"
-            >
-              📊 Ver resumen
-            </Button>
-          )}
-          
-          {/* Botón Ejecutar (derecha) */}
-          <Button
-            onClick={() => {
-              if (eventLoop.hasFinished) {
-                eventLoop.reset();
-              } else if (eventLoop.isAutomatic) {
-                eventLoop.start();
-              } else {
-                eventLoop.nextStep();
-              }
-            }}
-            disabled={!eventLoop.hasFinished && !eventLoop.hasTasksInQueue}
-            variant="outline"
-            className="h-9 px-4 shadow-md"
-            title={
-              eventLoop.hasFinished 
-                ? "Reiniciar simulación" 
-                : eventLoop.isAutomatic 
-                  ? "Ejecutar simulación" 
-                  : "Siguiente paso"
-            }
-          >
-            {eventLoop.hasFinished 
-              ? "🔁 Reiniciar" 
-              : eventLoop.isAutomatic 
-                ? "⏵ Ejecutar" 
-                : "⏭ Siguiente paso"
-            }
-          </Button>
         </div>
 
 
