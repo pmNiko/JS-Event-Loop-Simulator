@@ -1,73 +1,69 @@
-# Welcome to your Lovable project
+# JavaScript Event Loop Simulator
 
-## Project info
+A visual, interactive simulator for understanding the JavaScript Event Loop, built with React, Vite, Tailwind CSS, and Framer Motion. This tool helps developers and students visualize how synchronous and asynchronous code is executed in JavaScript, including the Call Stack, Web APIs, Microtask Queue, and Callback Queue.
 
-**URL**: https://lovable.dev/projects/82989633-992d-4005-9e3b-8d9e5e29366d
+## Features
 
-## How can I edit this code?
+- **Visual Event Loop**: Real-time visualization of the Call Stack, Web APIs, Microtask Queue, and Callback Queue.
+- **Interactive Code Blocks**: Editable code examples for synchronous code, setTimeout, Promises, and Fetch API.
+- **Execution Modes**: Automatic or manual step-by-step execution.
+- **Speed Control**: Adjustable execution speed for better understanding.
+- **Execution Log**: Detailed log of each step in the Event Loop.
+- **Summary Modal**: Comprehensive summary of loaded events, execution order, and outputs.
+- **Educational Tooltips**: Hover over panels for explanations.
+- **Dark/Light Theme**: Toggle between themes for comfort.
+- **Responsive Design**: Works on desktop and mobile.
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **React** - UI framework
+- **Vite** - Build tool
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **Framer Motion** - Animations
+- **shadcn/ui** - UI components
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/82989633-992d-4005-9e3b-8d9e5e29366d) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+1. Clone the repository:
+   ```sh
+   git clone <YOUR_GIT_URL>
+   cd visual-event-sim
+   ```
 
-**Use your preferred IDE**
+2. Install dependencies:
+   ```sh
+   npm i
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+3. Start the development server:
+   ```sh
+   npm run dev
+   ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+4. Open your browser and navigate to the provided local URL.
 
-Follow these steps:
+## How to Use
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1. **Load Events**: Use the code blocks at the top to load different types of events (sync, setTimeout, Promise, Fetch).
+2. **Configure Execution**: Choose between automatic or manual execution, and adjust the speed.
+3. **Run Simulation**: Click "Execute" to start the simulation, or use "Next Step" for manual control.
+4. **View Results**: Watch the Event Loop visualization and check the execution log for details.
+5. **Summary**: After execution, view the summary modal for a complete overview.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Educational Value
 
-# Step 3: Install the necessary dependencies.
-npm i
+This simulator is perfect for:
+- Understanding JavaScript's single-threaded nature
+- Learning about asynchronous programming
+- Visualizing the Event Loop's priority system
+- Debugging async code behavior
+- Teaching JavaScript concepts
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## Contributing
 
-**Edit a file directly in GitHub**
+Feel free to submit issues, feature requests, or pull requests to improve the simulator.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## License
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/82989633-992d-4005-9e3b-8d9e5e29366d) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This project is open source and available under the MIT License.
