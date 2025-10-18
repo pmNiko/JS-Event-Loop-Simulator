@@ -62,10 +62,10 @@ export function Controls({
             />
           </div>
           <div className="space-y-1.5">
-            <Label className="text-xs">Velocidad</Label>
+            <Label htmlFor="execution-speed" className="text-xs">Velocidad</Label>
             <Select value={speed} onValueChange={(value) => onSpeedChange(value as ExecutionSpeed)}>
-              <SelectTrigger className="h-8 text-xs">
-                <SelectValue />
+              <SelectTrigger id="execution-speed" className="h-8 text-xs text-foreground" aria-label="Velocidad de ejecución">
+                <SelectValue placeholder="Seleccionar velocidad" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="slow">Lenta</SelectItem>

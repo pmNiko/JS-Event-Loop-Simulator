@@ -33,10 +33,10 @@ const Index = () => {
               <Switch id="auto-mode" checked={eventLoop.isAutomatic} onCheckedChange={eventLoop.setIsAutomatic} />
             </div>
             <div className="hidden md:flex items-center gap-2">
-              <Label className="text-xs">Velocidad</Label>
+              <Label htmlFor="navbar-speed" className="text-xs">Velocidad</Label>
               <Select value={eventLoop.speed} onValueChange={(v) => eventLoop.setSpeed(v as any)}>
-                <SelectTrigger className="h-8 w-[110px] text-xs">
-                  <SelectValue />
+                <SelectTrigger id="navbar-speed" className="h-8 w-[110px] text-xs text-foreground" aria-label="Velocidad de ejecución">
+                  <SelectValue placeholder="Seleccionar velocidad" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="slow">Lenta</SelectItem>
@@ -51,6 +51,7 @@ const Index = () => {
               size="sm"
               className="h-8 px-2"
               title="Reiniciar"
+              aria-label="Reiniciar simulación"
             >
               <RotateCcw className="h-3 w-3" />
             </Button>
@@ -70,6 +71,7 @@ const Index = () => {
               size="sm"
               className="h-8 w-8 p-0"
               title="Acerca del Event Loop"
+              aria-label="Acerca del Event Loop"
             >
               ℹ️
             </Button>
@@ -161,7 +163,7 @@ const Index = () => {
           </div>
           {/* Derecha 40% - Log de Ejecución */}
           <div className="min-h-0 flex flex-col">
-            <h3 className="text-xs font-medium px-1 mb-2">📋 Log de Ejecución</h3>
+            <h2 className="text-xs font-medium px-1 mb-2">📋 Log de Ejecución</h2>
             <ExecutionLog logs={eventLoop.logs} />
           </div>
         </div>
