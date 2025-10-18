@@ -104,7 +104,7 @@ export function useEventLoop() {
             id: `task-${Date.now()}-webapi`,
             queue: 'webApi',
             timestamp: Date.now(),
-            name: `${config.name} (request)`,
+            name: `📡 Fetch API (pending)`,
           },
         ];
         break;
@@ -197,7 +197,9 @@ export function useEventLoop() {
           }
           if ((t as any).readyAt <= now) {
             taskQueueRef.current = taskQueueRef.current.filter(x => x.id !== t.id);
-            taskQueueRef.current.push({ ...t, id: `${t.id}-mt`, queue: 'microtask', name: t.name.replace('(request)', '(response)'), timestamp: Date.now() });
+            // Log visual: sale de Web APIs y entra a Microtask Queue
+            addLog('📬 Fetch API (response) pasa a Microtask Queue', 'microtask');
+            taskQueueRef.current.push({ ...t, id: `${t.id}-mt`, queue: 'microtask', name: `📬 Fetch API (response)`, timestamp: Date.now() });
           }
         }
       });
