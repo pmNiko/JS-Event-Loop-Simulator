@@ -21,6 +21,7 @@ export function useEventLoop() {
   
   const timeoutRef = useRef<NodeJS.Timeout>();
   const taskQueueRef = useRef<Task[]>([]);
+  const processedFetchIds = useRef<Set<string>>(new Set());
 
   const addLog = useCallback((message: string, type: QueueType) => {
     const newLog: LogEntry = {
@@ -91,26 +92,33 @@ export function useEventLoop() {
         break;
 
       case 'fetch':
+        // Fetch: solo dos pasos iniciales (init en stack, pending en webApi)
+        // La transición a Microtask se maneja en el useEffect cuando Web APIs resuelve
         newTasks = [
           {
             ...baseTask,
-            id: `task-${Date.now()}-stack`,
+            id: `task-${Date.now()}-init`,
             queue: 'callStack',
             timestamp: Date.now(),
             name: `${config.name} (init)`,
           },
           {
             ...baseTask,
-            id: `task-${Date.now()}-webapi`,
+            id: `task-${Date.now()}-pending`,
             queue: 'webApi',
             timestamp: Date.now(),
-            name: `📡 Fetch API (pending)`,
+            name: `📡 ${config.name} (pending)`,
           },
         ];
         break;
     }
 
     taskQueueRef.current = [...taskQueueRef.current, ...newTasks];
+    // Mostrar Web APIs en la UI al cargar
+    const webApiTasks = newTasks.filter(t => t.queue === 'webApi');
+    if (webApiTasks.length > 0) {
+      setTasks(prev => [...prev, ...webApiTasks]);
+    }
     setLoadedEvents(prev => [...prev, { type: config.type, name: config.name }]);
     addLog(`Event loaded: ${config.name}`, 'callStack');
   }, [addLog]);
@@ -138,7 +146,7 @@ export function useEventLoop() {
       return a.timestamp - b.timestamp;
     })[0];
 
-    setTasks(prev => [...prev, nextTask]);
+  setTasks(prev => (prev.some(t => t.id === nextTask.id) ? prev : [...prev, nextTask]));
     taskQueueRef.current = taskQueueRef.current.filter(t => t.id !== nextTask.id);
     addLog(`Executing: ${nextTask.name}`, nextTask.queue);
 
@@ -166,22 +174,25 @@ export function useEventLoop() {
     // Gestionar Web APIs: mover tareas a su siguiente cola cuando corresponda
     const now = Date.now();
     const pendingWebApis = taskQueueRef.current.filter(t => t.queue === 'webApi');
+    
     if (pendingWebApis.length > 0) {
       pendingWebApis.forEach((t) => {
         // setTimeout: respeta delay → Callback Queue (con orden de registro)
         if (t.type === 'setTimeout') {
-          const due = (t.delay ?? SPEED_DELAYS[speed]) / 1; // fallback
+          const due = (t.delay ?? SPEED_DELAYS[speed]) / 1;
           if (!('readyAt' in (t as any))) {
             (t as any).readyAt = now + due;
           }
           if ((t as any).readyAt <= now) {
             taskQueueRef.current = taskQueueRef.current.filter(x => x.id !== t.id);
+              // Sincronizar UI: quitar de Web APIs
+              setTasks(prev => prev.filter(x => x.id !== t.id));
             const newOrder = registrationOrder;
             setRegistrationOrder(prev => prev + 1);
             taskQueueRef.current.push({ 
               ...t, 
               id: `${t.id}-cb`, 
-              queue: 'callback', 
+              queue: 'callback' as QueueType, 
               name: t.name.replace('(waiting)', '(ready)'), 
               timestamp: Date.now(),
               registrationOrder: newOrder
@@ -189,17 +200,29 @@ export function useEventLoop() {
           }
         }
 
-        // fetch: tras una latencia simulada, pasa a Microtask (response)
+        // fetch: latencia de 800-1000ms antes de pasar a Microtask
         if (t.type === 'fetch') {
-          const due = (t.delay ?? SPEED_DELAYS[speed]) / 1.5;
-          if (!('readyAt' in (t as any))) {
-            (t as any).readyAt = now + due;
+          const fetchDelay = 900; // Retraso visible de ~900ms
+          if (!('fetchReadyAt' in (t as any))) {
+            (t as any).fetchReadyAt = now + fetchDelay;
           }
-          if ((t as any).readyAt <= now) {
+          // Solo procesar UNA VEZ por fetch
+          if ((t as any).fetchReadyAt <= now && !processedFetchIds.current.has(t.id)) {
+            processedFetchIds.current.add(t.id); // Marcar como procesado
+            // Eliminar de Web APIs
             taskQueueRef.current = taskQueueRef.current.filter(x => x.id !== t.id);
-            // Log visual: sale de Web APIs y entra a Microtask Queue
-            addLog('📬 Fetch API (response) pasa a Microtask Queue', 'microtask');
-            taskQueueRef.current.push({ ...t, id: `${t.id}-mt`, queue: 'microtask', name: `📬 Fetch API (response)`, timestamp: Date.now() });
+            // Crear tarea en Microtask con ID diferente
+            const responseName = t.name.replace('📡 ', '').replace(' (pending)', '');
+            const responseTask: Task = {
+              ...t,
+              id: `${t.id}-response`,
+              queue: 'microtask' as QueueType,
+              name: `📬 ${responseName} (response)`,
+              timestamp: Date.now(),
+            };
+            taskQueueRef.current.push(responseTask);
+            // Sincronizar UI: quitar de Web APIs y agregar a Microtask en una sola operación
+            setTasks(prev => [...prev.filter(x => x.id !== t.id), responseTask]);
           }
         }
       });
@@ -210,7 +233,7 @@ export function useEventLoop() {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [isRunning, isAutomatic, speed, currentStep, executeNextTask]);
+  }, [isRunning, isAutomatic, speed, currentStep, executeNextTask, registrationOrder]);
 
   const start = useCallback(() => {
     setIsRunning(true);
@@ -232,6 +255,7 @@ export function useEventLoop() {
     setHasFinished(false);
     setRegistrationOrder(0);
     taskQueueRef.current = [];
+    processedFetchIds.current.clear(); // Limpiar IDs de fetch procesados
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
