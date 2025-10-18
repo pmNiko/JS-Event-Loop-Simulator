@@ -74,7 +74,7 @@
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
-    "gh-pages": "^6.1.1",
+    "gh-pages": "^6.3.0",
     "globals": "^15.15.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
@@ -83,7 +83,15 @@
     "vite": "^5.4.19"
   },
   "description": "Simulador visual e interactivo para entender el Event Loop de JavaScript",
-  "keywords": ["javascript", "event-loop", "simulator", "visual", "education", "react", "typescript"],
+  "keywords": [
+    "javascript",
+    "event-loop",
+    "simulator",
+    "visual",
+    "education",
+    "react",
+    "typescript"
+  ],
   "author": "JavaScript Event Loop Simulator",
   "license": "MIT"
 }
