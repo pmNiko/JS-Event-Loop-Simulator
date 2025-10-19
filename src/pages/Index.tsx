@@ -23,21 +23,21 @@ const Index = () => {
   const [openAbout, setOpenAbout] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background p-3 md:p-4 overflow-hidden transition-colors">
-      <div className="mx-auto max-w-[1800px] h-screen flex flex-col gap-3">
+    <div className="min-h-screen bg-background p-2 sm:p-3 md:p-4 overflow-y-auto transition-colors">
+      <div className="mx-auto max-w-[1800px] md:h-screen flex flex-col gap-2 sm:gap-3 pb-4 sm:pb-0">
         {/* Navbar */}
-        <div className="flex items-center justify-between flex-shrink-0 rounded-md border bg-card/60 backdrop-blur px-3 py-2 shadow-sm">
-          <div className="space-y-0.5">
-            <h1 className="text-xl md:text-2xl font-bold text-foreground leading-none">{t.title}</h1>
-            <p className="text-[11px] text-muted-foreground">{t.subtitle}</p>
+        <div className="flex items-center justify-between flex-shrink-0 rounded-md border bg-card/60 backdrop-blur px-2 sm:px-3 py-2 shadow-sm">
+          <div className="space-y-0.5 flex-1 min-w-0 pr-2">
+            <h1 className="text-sm sm:text-base md:text-xl lg:text-2xl font-bold text-foreground leading-tight truncate">{t.title}</h1>
+            <p className="text-xs sm:text-[11px] text-muted-foreground truncate">{t.subtitle}</p>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="auto-mode" className="text-xs">{t.auto}</Label>
+          <div className="flex items-center gap-1.5 sm:gap-3">
+            <div className="hidden sm:flex items-center gap-2">
+              <Label htmlFor="auto-mode" className="text-xs sm:text-sm">{t.auto}</Label>
               <Switch id="auto-mode" checked={eventLoop.isAutomatic} onCheckedChange={eventLoop.setIsAutomatic} />
             </div>
             <div className="hidden md:flex items-center gap-2">
-              <Label htmlFor="navbar-speed" className="text-xs">{t.speed}</Label>
+              <Label htmlFor="navbar-speed" className="text-xs sm:text-sm">{t.speed}</Label>
               <Select value={eventLoop.speed} onValueChange={(v) => eventLoop.setSpeed(v as any)}>
                 <SelectTrigger id="navbar-speed" className="h-8 w-[110px] text-xs text-foreground" aria-label={t.selectSpeed}>
                   <SelectValue placeholder={t.selectSpeed} />
@@ -53,17 +53,17 @@ const Index = () => {
               onClick={eventLoop.reset}
               variant="outline"
               size="sm"
-              className="h-8 px-2"
+              className="h-7 sm:h-8 px-1.5 sm:px-2"
               title={t.reset}
               aria-label={t.resetSimulation}
             >
-              <RotateCcw className="h-3 w-3" />
+              <RotateCcw className="h-3 w-3 sm:h-4 sm:w-4" />
             </Button>
             <Button
               onClick={toggleLanguage}
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 text-lg"
+              className="h-7 w-7 sm:h-8 sm:w-8 p-0 text-base sm:text-lg"
               aria-label="Change language"
               title="Cambiar idioma / Change language"
             >
@@ -73,17 +73,17 @@ const Index = () => {
               onClick={toggleTheme}
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0"
+              className="h-7 w-7 sm:h-8 sm:w-8 p-0"
               aria-label={t.theme}
               title={t.theme}
             >
-              {theme === 'light' ? <Moon className="h-3 w-3" /> : <Sun className="h-3 w-3" />}
+              {theme === 'light' ? <Moon className="h-3 w-3 sm:h-4 sm:w-4" /> : <Sun className="h-3 w-3 sm:h-4 sm:w-4" />}
             </Button>
             <Button
               onClick={() => setOpenAbout(true)}
               variant="secondary"
               size="sm"
-              className="h-8 w-8 p-0"
+              className="h-7 w-7 sm:h-8 sm:w-8 p-0 text-sm sm:text-base"
               title={t.about}
               aria-label={t.about}
             >
@@ -92,8 +92,29 @@ const Index = () => {
           </div>
         </div>
 
+        {/* Mobile Controls - Visible only on small screens */}
+        <div className="sm:hidden flex items-center justify-between gap-3 rounded-md border bg-card/60 backdrop-blur px-3 py-2 shadow-sm flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <Label htmlFor="auto-mode-mobile" className="text-xs">{t.auto}</Label>
+            <Switch id="auto-mode-mobile" checked={eventLoop.isAutomatic} onCheckedChange={eventLoop.setIsAutomatic} />
+          </div>
+          <div className="flex items-center gap-2 flex-1">
+            <Label htmlFor="mobile-speed" className="text-xs">{t.speed}</Label>
+            <Select value={eventLoop.speed} onValueChange={(v) => eventLoop.setSpeed(v as any)}>
+              <SelectTrigger id="mobile-speed" className="h-8 w-full text-xs text-foreground" aria-label={t.selectSpeed}>
+                <SelectValue placeholder={t.selectSpeed} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="slow">{t.speedSlow}</SelectItem>
+                <SelectItem value="normal">{t.speedNormal}</SelectItem>
+                <SelectItem value="fast">{t.speedFast}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
         {/* Event Cards Grid - Top Section (2x2) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-shrink-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 flex-shrink-0">
           <EventCard
             type="sync"
             defaultName={t.syncCode}
@@ -130,18 +151,18 @@ const Index = () => {
         </div>
 
         {/* Bottom Section - Visualization: 60% Event Loop (izq) / 40% Log (der) */}
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 flex-1 min-h-0 px-1 pb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 sm:gap-6 flex-1 min-h-0 px-1 pb-6">
           {/* Izquierda 60% - Event Loop + Botones */}
-          <div className="min-h-0 flex flex-col justify-between">
+          <div className="min-h-[400px] lg:min-h-0 flex flex-col justify-between">
             <EventLoopPanel tasks={eventLoop.tasks} language={language} />
             {/* Botones alineados con la base del Log */}
-            <div className="flex justify-between items-end mt-4">
+            <div className="flex justify-between items-end mt-4 gap-2">
               {/* Botón Ver resumen (izquierda) */}
               {eventLoop.hasFinished && (
                 <Button
                   onClick={() => setOpenSummary(true)}
                   variant="secondary"
-                  className="h-9 px-4 shadow-md bg-secondary/80 hover:bg-secondary backdrop-blur"
+                  className="h-8 sm:h-9 px-3 sm:px-4 text-xs sm:text-sm shadow-md bg-secondary/80 hover:bg-secondary backdrop-blur"
                   title={t.viewSummary}
                 >
                   {t.viewSummary}
@@ -161,7 +182,7 @@ const Index = () => {
                 }}
                 disabled={!eventLoop.hasFinished && !eventLoop.hasTasksInQueue}
                 variant="outline"
-                className="h-9 px-4 shadow-md"
+                className="h-8 sm:h-9 px-3 sm:px-4 text-xs sm:text-sm shadow-md"
                 title={
                   eventLoop.hasFinished 
                     ? t.restartSimulation
@@ -180,8 +201,8 @@ const Index = () => {
             </div>
           </div>
           {/* Derecha 40% - Log de Ejecución */}
-          <div className="min-h-0 flex flex-col">
-            <h2 className="text-xs font-medium px-1 mb-2">{t.executionLog}</h2>
+          <div className="min-h-[300px] lg:min-h-0 flex flex-col">
+            <h2 className="text-sm font-medium px-1 mb-2">{t.executionLog}</h2>
             <ExecutionLog logs={eventLoop.logs} language={language} />
           </div>
         </div>

@@ -30,7 +30,7 @@ export function ExecutionLog({ logs, language }: ExecutionLogProps) {
   }, [logs]);
 
   return (
-    <Card className="flex flex-col min-h-0 flex-1 mb-4" style={{ maxHeight: 'calc(100vh - 450px)' }}>
+    <Card className="flex flex-col min-h-0 flex-1 mb-4" style={{ maxHeight: 'min(500px, calc(100vh - 450px))' }}>
       <CardContent className="p-3 flex-1 min-h-0 overflow-hidden">
         {/* Mini timeline */}
         <div className="pb-2">
@@ -55,7 +55,7 @@ export function ExecutionLog({ logs, language }: ExecutionLogProps) {
         <ScrollArea className="h-full">
           <div ref={scrollRef} className="space-y-1 pb-3">
             {logs.length === 0 ? (
-              <p className="text-xs text-muted-foreground py-2">{t.noLogs}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground py-2">{t.noLogs}</p>
             ) : (
               logs.map((log, idx) => (
                 <motion.div
@@ -65,9 +65,9 @@ export function ExecutionLog({ logs, language }: ExecutionLogProps) {
                   transition={{ duration: 0.3 }}
                   className="rounded px-1"
                 >
-                  <div className="text-xs font-mono flex items-start gap-1.5 py-0.5">
+                  <div className="text-xs sm:text-[11px] font-mono flex items-start gap-1.5 py-0.5">
                     <span>{logEmoji[log.type]}</span>
-                    <span className="text-muted-foreground text-[10px]">#{idx + 1}</span>
+                    <span className="text-muted-foreground text-[10px] sm:text-[11px]">#{idx + 1}</span>
                     <span className="flex-1">{log.message}</span>
                   </div>
                 </motion.div>

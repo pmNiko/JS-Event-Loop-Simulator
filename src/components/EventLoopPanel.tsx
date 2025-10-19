@@ -25,8 +25,8 @@ export function EventLoopPanel({ tasks, language }: EventLoopPanelProps) {
 
   return (
     <div className="flex flex-col gap-2 flex-1 min-h-0">
-      <h3 className="text-xs font-medium px-1">{t.eventLoop}</h3>
-      <div className="grid grid-cols-2 gap-2 flex-1 min-h-0">
+      <h3 className="text-sm font-medium px-1">{t.eventLoop}</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 flex-1 min-h-0">
         {(Object.keys(queueConfig) as QueueType[]).map(queue => {
           const config = queueConfig[queue];
           const queueTasks = getTasksByQueue(queue);
@@ -39,12 +39,12 @@ export function EventLoopPanel({ tasks, language }: EventLoopPanelProps) {
               transition={{ duration: 0.25 }}
               className="rounded-md"
             >
-              <Card className="flex flex-col min-h-0">
+              <Card className="flex flex-col min-h-[180px] sm:min-h-0">
                 <CardHeader className="pb-2 pt-3 px-3">
                   <div className="flex items-center justify-between">
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <CardTitle className="text-xs font-medium cursor-help">{config.title}</CardTitle>
+                        <CardTitle className="text-xs sm:text-sm font-medium cursor-help">{config.title}</CardTitle>
                       </TooltipTrigger>
                       <TooltipContent className="max-w-[220px] text-xs">
                         {config.tip}
@@ -74,7 +74,7 @@ export function EventLoopPanel({ tasks, language }: EventLoopPanelProps) {
                           stiffness: 500,
                           damping: 30
                         }}
-                        className="rounded-md p-1.5 text-xs font-mono"
+                        className="rounded-md p-1.5 text-xs sm:text-[11px] font-mono"
                         style={{
                           backgroundColor: `${config.color}18`,
                           border: `1px solid ${config.color}`,
