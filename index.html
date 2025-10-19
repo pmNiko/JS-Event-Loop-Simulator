@@ -1,11 +1,12 @@
 <!doctype html>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <meta name="theme-color" content="#2563eb" />
-    <title>Simulador Visual del Event Loop de JavaScript</title>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#2563eb" />
+  <title>Simulador Visual del Event Loop de JavaScript</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
     <meta name="description" content="Simulador visual e interactivo para entender el Event Loop de JavaScript. Visualiza el Call Stack, Web APIs, Microtask Queue y Callback Queue en tiempo real." />
     <meta name="author" content="JavaScript Event Loop Simulator" />
     <meta name="keywords" content="JavaScript, Event Loop, Call Stack, Web APIs, Microtask Queue, Callback Queue, Tutorial, Simulador" />
@@ -22,5 +23,12 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js');
+        });
+      }
+    </script>
   </body>
 </html>
