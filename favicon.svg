@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Fondo circular -->
+  <circle cx="16" cy="16" r="15" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+  
+  <!-- Call Stack (centro) -->
+  <rect x="12" y="8" width="8" height="6" fill="#3b82f6" rx="1"/>
+  <text x="16" y="12" text-anchor="middle" fill="white" font-size="6" font-family="Arial">CS</text>
+  
+  <!-- Web APIs (arriba) -->
+  <rect x="4" y="2" width="8" height="4" fill="#8b5cf6" rx="1"/>
+  <text x="8" y="5" text-anchor="middle" fill="white" font-size="4" font-family="Arial">API</text>
+  
+  <!-- Microtask Queue (derecha) -->
+  <rect x="22" y="8" width="6" height="8" fill="#10b981" rx="1"/>
+  <text x="25" y="13" text-anchor="middle" fill="white" font-size="4" font-family="Arial">μ</text>
+  
+  <!-- Callback Queue (abajo) -->
+  <rect x="4" y="22" width="8" height="4" fill="#f59e0b" rx="1"/>
+  <text x="8" y="25" text-anchor="middle" fill="white" font-size="4" font-family="Arial">CB</text>
+  
+  <!-- Flechas del Event Loop -->
+  <!-- De Web APIs a Microtask Queue -->
+  <path d="M8 6 Q16 4 22 8" stroke="#3b82f6" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- De Web APIs a Callback Queue -->
+  <path d="M8 6 Q16 20 8 22" stroke="#3b82f6" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- De Microtask Queue a Call Stack -->
+  <path d="M22 12 Q20 16 16 14" stroke="#10b981" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- De Callback Queue a Call Stack -->
+  <path d="M8 22 Q12 20 16 14" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- De Call Stack a Web APIs -->
+  <path d="M16 8 Q12 4 8 6" stroke="#3b82f6" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Definición de la punta de flecha -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+</svg>
