@@ -3,6 +3,8 @@ import { EventLoopPanel } from '@/components/EventLoopPanel';
 import { ExecutionLog } from '@/components/ExecutionLog';
 import { useEventLoop } from '@/hooks/useEventLoop';
 import { useTheme } from '@/hooks/useTheme';
+import { useLanguage } from '@/hooks/useLanguage';
+import { useTranslation } from '@/lib/translations';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -15,6 +17,8 @@ import { useState, useMemo } from 'react';
 const Index = () => {
   const eventLoop = useEventLoop();
   const { theme, toggleTheme } = useTheme();
+  const { language, toggleLanguage } = useLanguage();
+  const t = useTranslation(language);
   const [openSummary, setOpenSummary] = useState(false);
   const [openAbout, setOpenAbout] = useState(false);
 
@@ -24,24 +28,24 @@ const Index = () => {
         {/* Navbar */}
         <div className="flex items-center justify-between flex-shrink-0 rounded-md border bg-card/60 backdrop-blur px-3 py-2 shadow-sm">
           <div className="space-y-0.5">
-            <h1 className="text-xl md:text-2xl font-bold text-foreground leading-none">JavaScript Event Loop Simulator</h1>
-            <p className="text-[11px] text-muted-foreground">Visualización interactiva del flujo síncrono y asíncrono</p>
+            <h1 className="text-xl md:text-2xl font-bold text-foreground leading-none">{t.title}</h1>
+            <p className="text-[11px] text-muted-foreground">{t.subtitle}</p>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <Label htmlFor="auto-mode" className="text-xs">Auto</Label>
+              <Label htmlFor="auto-mode" className="text-xs">{t.auto}</Label>
               <Switch id="auto-mode" checked={eventLoop.isAutomatic} onCheckedChange={eventLoop.setIsAutomatic} />
             </div>
             <div className="hidden md:flex items-center gap-2">
-              <Label htmlFor="navbar-speed" className="text-xs">Velocidad</Label>
+              <Label htmlFor="navbar-speed" className="text-xs">{t.speed}</Label>
               <Select value={eventLoop.speed} onValueChange={(v) => eventLoop.setSpeed(v as any)}>
-                <SelectTrigger id="navbar-speed" className="h-8 w-[110px] text-xs text-foreground" aria-label="Velocidad de ejecución">
-                  <SelectValue placeholder="Seleccionar velocidad" />
+                <SelectTrigger id="navbar-speed" className="h-8 w-[110px] text-xs text-foreground" aria-label={t.selectSpeed}>
+                  <SelectValue placeholder={t.selectSpeed} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="slow">Lenta</SelectItem>
-                  <SelectItem value="normal">Normal</SelectItem>
-                  <SelectItem value="fast">Rápida</SelectItem>
+                  <SelectItem value="slow">{t.speedSlow}</SelectItem>
+                  <SelectItem value="normal">{t.speedNormal}</SelectItem>
+                  <SelectItem value="fast">{t.speedFast}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -50,18 +54,28 @@ const Index = () => {
               variant="outline"
               size="sm"
               className="h-8 px-2"
-              title="Reiniciar"
-              aria-label="Reiniciar simulación"
+              title={t.reset}
+              aria-label={t.resetSimulation}
             >
               <RotateCcw className="h-3 w-3" />
+            </Button>
+            <Button
+              onClick={toggleLanguage}
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0 text-lg"
+              aria-label="Change language"
+              title="Cambiar idioma / Change language"
+            >
+              {language === 'es' ? '🇦🇷' : '🇺🇸'}
             </Button>
             <Button
               onClick={toggleTheme}
               variant="ghost"
               size="sm"
               className="h-8 w-8 p-0"
-              aria-label="Cambiar tema"
-              title="Tema"
+              aria-label={t.theme}
+              title={t.theme}
             >
               {theme === 'light' ? <Moon className="h-3 w-3" /> : <Sun className="h-3 w-3" />}
             </Button>
@@ -70,8 +84,8 @@ const Index = () => {
               variant="secondary"
               size="sm"
               className="h-8 w-8 p-0"
-              title="Acerca del Event Loop"
-              aria-label="Acerca del Event Loop"
+              title={t.about}
+              aria-label={t.about}
             >
               ℹ️
             </Button>
@@ -82,32 +96,36 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-shrink-0">
           <EventCard
             type="sync"
-            defaultName="Código Síncrono"
+            defaultName={t.syncCode}
             defaultCode="console.log('1️⃣ Start');"
-            description="Ejecución inmediata en el Call Stack"
+            description={t.syncDesc}
             onLoad={eventLoop.loadEvent}
+            language={language}
           />
           <EventCard
             type="setTimeout"
             defaultName="setTimeout"
             defaultCode="console.log('5️⃣ Timeout 1');"
             defaultDelay={0}
-            description="Callback Queue con retraso"
+            description={t.setTimeoutDesc}
             onLoad={eventLoop.loadEvent}
+            language={language}
           />
           <EventCard
             type="promise"
             defaultName="Promise"
             defaultCode="Promise.resolve().then(() => console.log('3️⃣ Promise 1'));"
-            description="Microtask Queue con prioridad"
+            description={t.promiseDesc}
             onLoad={eventLoop.loadEvent}
+            language={language}
           />
           <EventCard
             type="fetch"
             defaultName="Fetch API"
             defaultCode="fetch('https://api.example.com/data').then(res => console.log('4️⃣ Fetch response'));"
-            description="Web APIs + Promises combinados"
+            description={t.fetchDesc}
             onLoad={eventLoop.loadEvent}
+            language={language}
           />
         </div>
 
@@ -115,7 +133,7 @@ const Index = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 flex-1 min-h-0 px-1 pb-6">
           {/* Izquierda 60% - Event Loop + Botones */}
           <div className="min-h-0 flex flex-col justify-between">
-            <EventLoopPanel tasks={eventLoop.tasks} />
+            <EventLoopPanel tasks={eventLoop.tasks} language={language} />
             {/* Botones alineados con la base del Log */}
             <div className="flex justify-between items-end mt-4">
               {/* Botón Ver resumen (izquierda) */}
@@ -124,9 +142,9 @@ const Index = () => {
                   onClick={() => setOpenSummary(true)}
                   variant="secondary"
                   className="h-9 px-4 shadow-md bg-secondary/80 hover:bg-secondary backdrop-blur"
-                  title="Ver resumen"
+                  title={t.viewSummary}
                 >
-                  📊 Ver resumen
+                  {t.viewSummary}
                 </Button>
               )}
               
@@ -146,25 +164,25 @@ const Index = () => {
                 className="h-9 px-4 shadow-md"
                 title={
                   eventLoop.hasFinished 
-                    ? "Reiniciar simulación" 
+                    ? t.restartSimulation
                     : eventLoop.isAutomatic 
-                      ? "Ejecutar simulación" 
-                      : "Siguiente paso"
+                      ? t.execute
+                      : t.nextStep
                 }
               >
                 {eventLoop.hasFinished 
-                  ? "🔁 Reiniciar" 
+                  ? t.restart
                   : eventLoop.isAutomatic 
-                    ? "⏵ Ejecutar" 
-                    : "⏭ Siguiente paso"
+                    ? t.execute
+                    : t.nextStep
                 }
               </Button>
             </div>
           </div>
           {/* Derecha 40% - Log de Ejecución */}
           <div className="min-h-0 flex flex-col">
-            <h2 className="text-xs font-medium px-1 mb-2">📋 Log de Ejecución</h2>
-            <ExecutionLog logs={eventLoop.logs} />
+            <h2 className="text-xs font-medium px-1 mb-2">{t.executionLog}</h2>
+            <ExecutionLog logs={eventLoop.logs} language={language} />
           </div>
         </div>
 
@@ -176,10 +194,11 @@ const Index = () => {
           onOpenChange={setOpenSummary}
           loaded={eventLoop.loadedEvents}
           logs={eventLoop.logs}
+          language={language}
         />
 
         {/* Modal Acerca de */}
-        <AboutDialog open={openAbout} onOpenChange={setOpenAbout} />
+        <AboutDialog open={openAbout} onOpenChange={setOpenAbout} language={language} />
       </div>
     </div>
   );
@@ -194,12 +213,15 @@ function SummaryDialog({
   onOpenChange,
   loaded,
   logs,
+  language,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   loaded: LoadedEvent[];
   logs: { id: string; message: string; timestamp: number }[];
+  language: 'es' | 'en';
 }) {
+  const t = useTranslation(language);
   const executionItems = logs.filter(l => l.message.startsWith('Executing:'));
   const outputItems = logs.filter(l => l.message.startsWith('OUTPUT:'));
 
@@ -207,17 +229,17 @@ function SummaryDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl">
         <DialogHeader>
-          <DialogTitle>Resumen de ejecución</DialogTitle>
+          <DialogTitle>{t.summaryTitle}</DialogTitle>
         </DialogHeader>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Izquierda: Orden de carga + Orden de ejecución */}
           <div className="space-y-4">
             {/* Orden de carga */}
             <div className="space-y-2">
-              <h4 className="text-sm font-medium">Eventos cargados</h4>
+              <h4 className="text-sm font-medium">{t.loadedEvents}</h4>
               <div className="rounded-md border p-2 max-h-40 overflow-auto text-xs">
                 {loaded.length === 0 ? (
-                  <p className="text-muted-foreground">Sin eventos</p>
+                  <p className="text-muted-foreground">{t.noEvents}</p>
                 ) : (
                   <ol className="list-decimal list-inside space-y-1">
                     {loaded.map((e, i) => (
@@ -229,10 +251,10 @@ function SummaryDialog({
             </div>
             {/* Orden de ejecución */}
             <div className="space-y-2">
-              <h4 className="text-sm font-medium">Orden de ejecución</h4>
+              <h4 className="text-sm font-medium">{t.executionOrder}</h4>
               <div className="rounded-md border p-2 max-h-64 overflow-auto text-xs">
                 {executionItems.length === 0 ? (
-                  <p className="text-muted-foreground">Sin pasos ejecutados</p>
+                  <p className="text-muted-foreground">{t.noSteps}</p>
                 ) : (
                   <ol className="list-decimal list-inside space-y-1">
                     {executionItems.map((l, i) => (
@@ -247,10 +269,10 @@ function SummaryDialog({
           </div>
           {/* Derecha: Outputs */}
           <div className="space-y-3">
-            <h4 className="text-sm font-medium">Outputs (console.log)</h4>
+            <h4 className="text-sm font-medium">{t.outputs}</h4>
             <div className="rounded-md border p-2 max-h-[380px] overflow-auto text-xs">
               {outputItems.length === 0 ? (
-                <p className="text-muted-foreground">Sin outputs</p>
+                <p className="text-muted-foreground">{t.noOutputs}</p>
               ) : (
                 <ol className="list-decimal list-inside space-y-1">
                   {outputItems.map((l, i) => (
@@ -264,24 +286,26 @@ function SummaryDialog({
           </div>
         </div>
         <DialogFooter className="gap-2 sm:gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Cerrar resumen</Button>
-          <Button onClick={() => { onOpenChange(false); location.reload(); }}>Reiniciar simulación</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>{t.closeSummary}</Button>
+          <Button onClick={() => { onOpenChange(false); location.reload(); }}>{t.restartSimulation}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 }
 
-function AboutDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+function AboutDialog({ open, onOpenChange, language }: { open: boolean; onOpenChange: (v: boolean) => void; language: 'es' | 'en' }) {
+  const t = useTranslation(language);
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl bg-gradient-to-br from-background via-background to-muted/20 border-2 border-primary/20 shadow-2xl">
         <DialogHeader className="text-center pb-4">
           <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-            🧠 Event Loop de JavaScript
+            {t.aboutTitle}
           </DialogTitle>
           <p className="text-sm text-muted-foreground mt-2">
-            Aprende cómo JavaScript maneja múltiples tareas sin bloquearse
+            {t.aboutSubtitle}
           </p>
         </DialogHeader>
         
@@ -292,12 +316,12 @@ function AboutDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
               <div className="text-3xl">🧠</div>
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-3">
-                  ¿Qué es el Event Loop?
+                  {t.whatIsTitle}
                 </h3>
                 <div className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
-                  <p>• <strong>JavaScript es single-threaded</strong> - solo puede hacer una cosa a la vez</p>
-                  <p>• <strong>El Event Loop</strong> coordina múltiples tareas sin bloquear la ejecución principal</p>
-                  <p>• <strong>Gracias a él</strong>, el navegador puede seguir respondiendo mientras procesa operaciones asíncronas</p>
+                  <p>• <strong>{t.whatIsPoint1}</strong> {t.whatIsPoint1Desc}</p>
+                  <p>• <strong>{t.whatIsPoint2}</strong> {t.whatIsPoint2Desc}</p>
+                  <p>• <strong>{t.whatIsPoint3}</strong>{t.whatIsPoint3Desc}</p>
                 </div>
               </div>
             </div>
@@ -309,24 +333,24 @@ function AboutDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
               <div className="text-3xl">⚙️</div>
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-green-900 dark:text-green-100 mb-3">
-                  ¿Cómo funciona?
+                  {t.howWorksTitle}
                 </h3>
                 <div className="space-y-3 text-sm text-green-800 dark:text-green-200">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    <span><strong>Call Stack</strong> ejecuta el código principal de forma síncrona</span>
+                    <span><strong>{t.howWorksPoint1}</strong> {t.howWorksPoint1Desc}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                    <span><strong>Web APIs</strong> gestionan tareas asíncronas como fetch, setTimeout o event listeners</span>
+                    <span><strong>{t.howWorksPoint2}</strong> {t.howWorksPoint2Desc}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                    <span>Cuando terminan, sus resultados se envían a las <strong>colas</strong> (Microtasks o Callbacks)</span>
+                    <span>{t.howWorksPoint3} <strong>{t.howWorksPoint3Desc}</strong> {t.howWorksPoint3Desc2}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
-                    <span>El <strong>Event Loop</strong> decide cuándo procesarlas según su prioridad</span>
+                    <span>{t.howWorksPoint4} <strong>{t.howWorksPoint4Desc}</strong> {t.howWorksPoint4Desc2}</span>
                   </div>
                 </div>
               </div>
@@ -339,22 +363,22 @@ function AboutDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
               <div className="text-3xl">🔄</div>
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-orange-900 dark:text-orange-100 mb-4">
-                  Orden de prioridad (flujo visual)
+                  {t.priorityTitle}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-3">
                     <div className="flex items-center gap-3 p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg border border-blue-300 dark:border-blue-700">
                       <span className="text-xl">🔹</span>
                       <div>
-                        <div className="font-semibold text-blue-900 dark:text-blue-100">1️⃣ Call Stack</div>
-                        <div className="text-xs text-blue-700 dark:text-blue-300">Código síncrono</div>
+                        <div className="font-semibold text-blue-900 dark:text-blue-100">{t.priority1}</div>
+                        <div className="text-xs text-blue-700 dark:text-blue-300">{t.priority1Desc}</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-3 p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg border border-purple-300 dark:border-purple-700">
                       <span className="text-xl">🟣</span>
                       <div>
-                        <div className="font-semibold text-purple-900 dark:text-purple-100">2️⃣ Web APIs</div>
-                        <div className="text-xs text-purple-700 dark:text-purple-300">Manejan tareas externas</div>
+                        <div className="font-semibold text-purple-900 dark:text-purple-100">{t.priority2}</div>
+                        <div className="text-xs text-purple-700 dark:text-purple-300">{t.priority2Desc}</div>
                       </div>
                     </div>
                   </div>
@@ -362,23 +386,22 @@ function AboutDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
                     <div className="flex items-center gap-3 p-3 bg-green-100 dark:bg-green-900/30 rounded-lg border border-green-300 dark:border-green-700">
                       <span className="text-xl">🟢</span>
                       <div>
-                        <div className="font-semibold text-green-900 dark:text-green-100">3️⃣ Microtask Queue</div>
-                        <div className="text-xs text-green-700 dark:text-green-300">Promesas y procesos inmediatos</div>
+                        <div className="font-semibold text-green-900 dark:text-green-100">{t.priority3}</div>
+                        <div className="text-xs text-green-700 dark:text-green-300">{t.priority3Desc}</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-3 p-3 bg-orange-100 dark:bg-orange-900/30 rounded-lg border border-orange-300 dark:border-orange-700">
                       <span className="text-xl">🟠</span>
                       <div>
-                        <div className="font-semibold text-orange-900 dark:text-orange-100">4️⃣ Callback Queue</div>
-                        <div className="text-xs text-orange-700 dark:text-orange-300">Timeouts, eventos, etc.</div>
+                        <div className="font-semibold text-orange-900 dark:text-orange-100">{t.priority4}</div>
+                        <div className="text-xs text-orange-700 dark:text-orange-300">{t.priority4Desc}</div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="mt-4 p-3 bg-gradient-to-r from-primary/10 to-blue-500/10 rounded-lg border border-primary/20">
                   <p className="text-xs text-center text-primary dark:text-blue-300 font-medium">
-                    💡 <strong>Tip:</strong> Las microtareas siempre se ejecutan antes que los callbacks, 
-                    sin importar cuándo se registraron
+                    {t.tipLabel} <strong>{t.tipStrong}</strong> {t.tipText}
                   </p>
                 </div>
               </div>
@@ -391,7 +414,7 @@ function AboutDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
             onClick={() => onOpenChange(false)}
             className="w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition-all duration-200"
           >
-            ✨ Entendido - ¡A simular!
+            {t.understood}
           </Button>
         </DialogFooter>
       </DialogContent>

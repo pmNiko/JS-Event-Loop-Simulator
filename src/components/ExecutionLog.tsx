@@ -3,9 +3,12 @@ import { LogEntry, QueueType } from '@/types/eventLoop';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Language } from '@/hooks/useLanguage';
+import { useTranslation } from '@/lib/translations';
 
 interface ExecutionLogProps {
   logs: LogEntry[];
+  language: Language;
 }
 
 const logEmoji: Record<QueueType, string> = {
@@ -15,7 +18,8 @@ const logEmoji: Record<QueueType, string> = {
   callback: '🟠',
 };
 
-export function ExecutionLog({ logs }: ExecutionLogProps) {
+export function ExecutionLog({ logs, language }: ExecutionLogProps) {
+  const t = useTranslation(language);
   const scrollRef = useRef<HTMLDivElement>(null);
   const recent = useMemo(() => logs.slice(-20), [logs]);
 
@@ -51,7 +55,7 @@ export function ExecutionLog({ logs }: ExecutionLogProps) {
         <ScrollArea className="h-full">
           <div ref={scrollRef} className="space-y-1 pb-3">
             {logs.length === 0 ? (
-              <p className="text-xs text-muted-foreground py-2">No hay registros aún</p>
+              <p className="text-xs text-muted-foreground py-2">{t.noLogs}</p>
             ) : (
               logs.map((log, idx) => (
                 <motion.div

@@ -32,11 +32,12 @@ Referencias útiles (MDN):
 
 ## ⚙️ Características
 
-- Ejecución paso a paso del Event Loop.
-- Visualización en tiempo real del Call Stack, Web APIs, Microtask Queue y Callback Queue.
-- Log detallado de ejecución con cada transición y salida (console.log).
-- Modo automático o lento (control de velocidad y ejecución manual).
-- Resumen final con el orden real de ejecución y outputs.
+- **Ejecución paso a paso** del Event Loop.
+- **Visualización en tiempo real** del Call Stack, Web APIs, Microtask Queue y Callback Queue.
+- **Log detallado** de ejecución con cada transición y salida (console.log).
+- **Modo automático o lento** (control de velocidad y ejecución manual).
+- **Resumen final** con el orden real de ejecución y outputs.
+- **Cambio de idioma** 🇦🇷 Español / 🇺🇸 English - Interfaz completamente bilingüe.
 
 ## 🚀 Uso
 

@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { EventConfig, EventType } from '@/types/eventLoop';
 import { Code2, Clock, Sparkles, Globe } from 'lucide-react';
+import { Language } from '@/hooks/useLanguage';
+import { useTranslation } from '@/lib/translations';
 
 interface EventCardProps {
   type: EventType;
@@ -13,6 +15,7 @@ interface EventCardProps {
   defaultDelay?: number;
   description: string;
   onLoad: (config: EventConfig) => void;
+  language: Language;
 }
 
 const iconMap = {
@@ -22,7 +25,8 @@ const iconMap = {
   fetch: Globe,
 };
 
-export function EventCard({ type, defaultName, defaultCode, defaultDelay, description, onLoad }: EventCardProps) {
+export function EventCard({ type, defaultName, defaultCode, defaultDelay, description, onLoad, language }: EventCardProps) {
+  const t = useTranslation(language);
   const [name, setName] = useState(defaultName);
   const [code, setCode] = useState(defaultCode);
   const [delay, setDelay] = useState(defaultDelay || 1000);
@@ -51,13 +55,13 @@ export function EventCard({ type, defaultName, defaultCode, defaultDelay, descri
         <Input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Event name"
+          placeholder={t.eventName}
           className="text-xs h-7"
         />
         <Textarea
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          placeholder="Code to execute"
+          placeholder={t.codeToExecute}
           className="font-mono text-[10px] min-h-[60px] resize-none flex-1"
         />
         {type === 'setTimeout' && (
@@ -65,12 +69,12 @@ export function EventCard({ type, defaultName, defaultCode, defaultDelay, descri
             type="number"
             value={delay}
             onChange={(e) => setDelay(Number(e.target.value))}
-            placeholder="Delay (ms)"
+            placeholder={t.delayMs}
             className="text-xs h-7"
           />
         )}
         <Button onClick={handleLoad} size="sm" className="w-full h-7 text-xs mt-auto">
-          Cargar evento
+          {t.loadEvent}
         </Button>
       </CardContent>
     </Card>

@@ -3,24 +3,29 @@ import { Task, QueueType } from '@/types/eventLoop';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Language } from '@/hooks/useLanguage';
+import { useTranslation } from '@/lib/translations';
 
 interface EventLoopPanelProps {
   tasks: Task[];
+  language: Language;
 }
 
-const queueConfig = {
-  callStack: { title: 'Call Stack', color: 'hsl(var(--call-stack))', tip: 'Pila de llamadas donde se ejecuta el código síncrono.' },
-  webApi: { title: 'Web APIs', color: 'hsl(var(--web-api))', tip: 'APIs del navegador que gestionan operaciones asíncronas (timers, fetch, etc.).' },
-  microtask: { title: 'Microtask Queue', color: 'hsl(var(--microtask))', tip: 'Cola de alta prioridad (promesas cumplidas, mutation observers).' },
-  callback: { title: 'Callback Queue', color: 'hsl(var(--callback))', tip: 'Cola de callbacks de menor prioridad (timers, eventos de UI).' },
-};
+export function EventLoopPanel({ tasks, language }: EventLoopPanelProps) {
+  const t = useTranslation(language);
+  
+  const queueConfig = {
+    callStack: { title: t.callStack, color: 'hsl(var(--call-stack))', tip: t.callStackTip },
+    webApi: { title: t.webApis, color: 'hsl(var(--web-api))', tip: t.webApisTip },
+    microtask: { title: t.microtaskQueue, color: 'hsl(var(--microtask))', tip: t.microtaskQueueTip },
+    callback: { title: t.callbackQueue, color: 'hsl(var(--callback))', tip: t.callbackQueueTip },
+  };
 
-export function EventLoopPanel({ tasks }: EventLoopPanelProps) {
   const getTasksByQueue = (queue: QueueType) => tasks.filter(t => t.queue === queue);
 
   return (
     <div className="flex flex-col gap-2 flex-1 min-h-0">
-      <h3 className="text-xs font-medium px-1">Event Loop</h3>
+      <h3 className="text-xs font-medium px-1">{t.eventLoop}</h3>
       <div className="grid grid-cols-2 gap-2 flex-1 min-h-0">
         {(Object.keys(queueConfig) as QueueType[]).map(queue => {
           const config = queueConfig[queue];
